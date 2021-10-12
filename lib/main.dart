@@ -74,16 +74,23 @@ class FormValidation extends StatefulWidget {
 // FOCUSNODE EXAMPLE
 class _FormValidationState extends State<FormValidation> {
   late FocusNode myFocusNode;
+  final myController = TextEditingController();
   @override
   void initState() {
     super.initState();
     myFocusNode = FocusNode();
+    myController.addListener(_printLatestValue);
   }
 
   @override
   void dispose() {
     myFocusNode.dispose();
+    myController.dispose();
     super.dispose();
+  }
+
+  void _printLatestValue() {
+    print('Second text field: ${myController.text}');
   }
 
   @override
@@ -96,9 +103,13 @@ class _FormValidationState extends State<FormValidation> {
           children: [
             TextField(
               autofocus: true,
+              onChanged: (text) {
+                print('First text field: $text');
+              },
             ),
             TextField(
               focusNode: myFocusNode,
+              controller: myController,
             ),
           ],
         ),
