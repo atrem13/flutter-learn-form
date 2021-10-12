@@ -101,12 +101,12 @@ class _FormValidationState extends State<FormValidation> {
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              autofocus: true,
-              onChanged: (text) {
-                print('First text field: $text');
-              },
-            ),
+            // TextField(
+            //   autofocus: true,
+            //   onChanged: (text) {
+            //     print('First text field: $text');
+            //   },
+            // ),
             TextField(
               focusNode: myFocusNode,
               controller: myController,
@@ -115,9 +115,16 @@ class _FormValidationState extends State<FormValidation> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => myFocusNode.requestFocus(),
-        tooltip: 'Focus to second text field',
-        child: Icon(Icons.edit),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(content: Text(myController.text));
+            },
+          );
+        },
+        tooltip: 'Show The Value',
+        child: Icon(Icons.text_fields),
       ),
     );
   }
