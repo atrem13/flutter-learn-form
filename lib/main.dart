@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: appTitle,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text(appTitle),
-        ),
+        // appBar: AppBar(
+        //   title: Text(appTitle),
+        // ),
         body: FormValidation(),
       ),
     );
@@ -28,38 +28,85 @@ class FormValidation extends StatefulWidget {
   _FormValidationState createState() => _FormValidationState();
 }
 
+// VALIDATION & FOCUS
+// class _FormValidationState extends State<FormValidation> {
+//   final _formKey = GlobalKey<FormState>();
+//   @override
+//   Widget build(BuildContext context) {
+//     return Form(
+//       key: _formKey,
+//       child: Column(
+//         // crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           TextFormField(
+//             validator: (value) {
+//               if (value == null || value.isEmpty) {
+//                 return 'Please enter some text';
+//               } else {
+//                 return null;
+//               }
+//             },
+//             decoration: InputDecoration(
+//               border: OutlineInputBorder(),
+//               hintText: 'Enter Something',
+//             ),
+//             autofocus: true,
+//           ),
+//           Padding(
+//             padding: EdgeInsets.symmetric(vertical: 16.0),
+//             child: ElevatedButton(
+//               onPressed: () {
+//                 if (_formKey.currentState!.validate()) {
+//                   ScaffoldMessenger.of(context).showSnackBar(
+//                     SnackBar(content: Text('In Progress')),
+//                   );
+//                 }
+//               },
+//               child: Text('Submit'),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// FOCUSNODE EXAMPLE
 class _FormValidationState extends State<FormValidation> {
-  final _formKey = GlobalKey<FormState>();
+  late FocusNode myFocusNode;
+  @override
+  void initState() {
+    super.initState();
+    myFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextFormField(
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter some text';
-              } else {
-                return null;
-              }
-            },
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('In Progress')),
-                  );
-                }
-              },
-              child: Text('Submit'),
+    return Scaffold(
+      appBar: AppBar(title: Text('Learn To Focus Text Field')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              autofocus: true,
             ),
-          ),
-        ],
+            TextField(
+              focusNode: myFocusNode,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => myFocusNode.requestFocus(),
+        tooltip: 'Focus to second text field',
+        child: Icon(Icons.edit),
       ),
     );
   }
